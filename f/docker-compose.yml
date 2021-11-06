@@ -1,0 +1,75 @@
+version: "2"
+
+services:
+###
+# homeasssitant
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:latest
+    restart: unless-stopped
+    networks:
+       default:
+    ports:
+      - 8123:8123
+    environment:
+      TZ: 'Europe/Berlin'
+    volumes:
+       - homeassistant:/config
+###
+# mqtt
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    networks:
+        default:
+    ports:
+      - "1883:1883/tcp"
+    volumes: 
+      - mqtt_log:/mosquitto/log
+      - mqtt_data:/mosquitto/data
+      - mqtt_config:/mosquitto/config
+    environment:
+      TZ: 'Europe/Berlin'
+      
+###
+# octoprint
+  octoprint:
+    container_name: octoprint
+    image: octoprint/octoprint
+    networks:
+      smarthome_default:
+    restart: unless-stopped
+    environment:
+      TZ: 'Europe/Berlin'
+      ENABLE_MJPG_STREAMER: 'true'
+    ports:
+      - "8081:80/tcp"
+    volumes:
+      - octoprint:/octoprint
+      
+###
+# heimdall
+  heimdall:
+    image: lscr.io/linuxserver/heimdall
+    container_name: heimdall
+    networks:
+      smarthome_default:
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - heimdall:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
+volumes:
+  homeassistant:
+  mqtt_log:
+  mqtt_data:
+  mqtt_config:
+  heimdall:
+  octoprint:
