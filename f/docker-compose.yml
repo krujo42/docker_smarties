@@ -7,8 +7,6 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant:latest
     restart: unless-stopped
-    networks:
-       default:
     ports:
       - 8123:8123
     environment:
@@ -21,8 +19,6 @@ services:
     container_name: mqtt
     image: eclipse-mosquitto
     restart: unless-stopped
-    networks:
-        default:
     ports:
       - "1883:1883/tcp"
     volumes: 
@@ -37,8 +33,6 @@ services:
   octoprint:
     container_name: octoprint
     image: octoprint/octoprint
-    networks:
-      smarthome_default:
     restart: unless-stopped
     environment:
       TZ: 'Europe/Berlin'
@@ -53,8 +47,6 @@ services:
   heimdall:
     image: lscr.io/linuxserver/heimdall
     container_name: heimdall
-    networks:
-      smarthome_default:
     environment:
       - PUID=1000
       - PGID=1000
