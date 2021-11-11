@@ -17,9 +17,9 @@ services:
       - 443:443
     restart: unless-stopped
 
-  # nginx2:
-  #   container_name: smarties_nginx2_c
-  #   image: nginx
+  nginx2:
+    container_name: smarties_nginx2_c
+    image: nginx
     
 
 volumes:
