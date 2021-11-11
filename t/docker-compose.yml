@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+###
+# heimdall
+  heimdall:
+    image: lscr.io/linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - heimdall:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
+    # nginx2:
+    # container_name: nginx2
+    # image: nginx
+    # #
+
+volumes:
+  heimdall:
